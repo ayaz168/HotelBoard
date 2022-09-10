@@ -5,18 +5,19 @@ const {
   getHotel,
   getAllHotel,
 } = require("../controllers/hotelController");
+const { checkAdmin } = require("../utils/tokenTest");
 
 const router = require("express").Router();
 
 //Create, Update, Delete, Get, GetAll
 //Post Method for Creating, Async Because connecting to db takes times
-router.post("/", createHotel);
+router.post("/", checkAdmin, createHotel);
 //Update
 //Using PUT METHOD
-router.put("/:id", updateHotel);
+router.put("/:id", checkAdmin, updateHotel);
 //Delete
 //Using PUT METHOD
-router.delete("/:id", deleteHotel);
+router.delete("/:id", checkAdmin, deleteHotel);
 //Get
 //Using get METHOD
 router.get("/:id", getHotel);

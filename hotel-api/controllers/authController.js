@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const { createError } = require("../utils/error");
+const JWT = require("jsonwebtoken");
+const dotenv = require("dotenv");
 
 module.exports.register = async (req, res, next) => {
   try {
@@ -26,8 +28,18 @@ module.exports.login = async (req, res, next) => {
       user.password
     );
     if (!isPassCorrect) return next(createError(400, "Password Incorrect"));
-    const { password, isAdmin, ...otherProperties } = user._doc;
-    res.status(200).send({ ...otherProperties });
+    //Password corrrect, so creating a new token
+    const token = JWT.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.MY_KEY
+    ); //Just using 2 properties
+    const { password, isAdmin, ...otherProperties } = user._doc; //to breakit down and not send password back
+    res
+      .cookie("access_token", token, {
+        httpOnly: true, //no important information gets to the cookies
+      })
+      .status(200)
+      .send({ ...otherProperties });
   } catch (err) {
     next(err);
   }

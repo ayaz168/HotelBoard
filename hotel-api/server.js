@@ -6,6 +6,8 @@ const authRoute = require("./routes/auth");
 const usersRoute = require("./routes/users");
 const hotelsRoute = require("./routes/hotels");
 const roomsRoute = require("./routes/rooms");
+//cokie parser as middleware
+const CookieParser = require("cookie-parser");
 
 const app = express();
 app.use(express.json());
@@ -32,11 +34,11 @@ mongoose.connection.on("connected", () => {
   console.log("MongoDB Connected");
 });
 
-//To be abe to send json data
-
-app.use(express.json());
-
 //Middlewares ==> Defining Routes
+
+app.use(CookieParser());
+
+app.use(express.json()); //To be abe to send json data
 
 app.use("/auth", authRoute);
 app.use("/users", usersRoute);

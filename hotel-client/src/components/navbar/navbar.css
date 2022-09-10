@@ -1,0 +1,26 @@
+.navbar {
+  height: 50px;
+  background-color: rebeccapurple;
+  display: flex;
+  justify-content: center;
+}
+.navContainer {
+  width: 100%;
+  max-width: 1080px;
+  background-color: rebeccapurple;
+  color: white; /*font*/
+  display: flex; /* to make logo and buttons horizental*/
+  align-items: center; /*center vertically*/
+  justify-content: space-between; /* so they are at corners*/
+}
+.logo {
+  font-weight: 500;
+}
+.navButton {
+  margin-left: 10px;
+  border: none;
+  padding: 5px 10px; /*vertical horizental*/
+  color: rgb(204, 220, 234);
+  background-color: rgb(149, 100, 197);
+  border-radius: 5px;
+}
