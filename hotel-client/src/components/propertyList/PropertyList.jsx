@@ -3,40 +3,35 @@ import imgApartment from "../Images/Apartments.jpg"
 import imgHotels from "../Images/Hotels.jpg"
 import imgResorts from "../Images/Resorts.jpg"
 import imgRooms from "../Images/Rooms.jpg"
+import useFetch from "../../hooks/useFetch"
+
 export default function PropertyList() {
+    const { data, loading, error } = useFetch("http://localhost:8780/hotels/countType");
+    console.log(data);
+
+
+    const Images = [imgHotels, imgResorts, imgApartment, imgRooms];
     return (
 
         <div className="PropertyList">
 
-            <div className="PropertyItems">
-                <img src={imgHotels} alt="" className="PropertyListImg" />
-                <div className="PropertyListTitles">
-                    <h1>Hotels</h1>
-                    <h2>35 Hotels</h2>
-                </div>
-            </div>
+            {loading ? ("Loading...., thankyou for your patience") : (
+                <>
+                    {data &&
+                        Images.map((imG, i) => (
 
-            <div className="PropertyItems">
-                <img src={imgResorts} alt="" className="PropertyListImg" />
-                <div className="PropertyListTitles">
-                    <h1>Resorts</h1>
-                    <h2>20 Resorts</h2>
-                </div>
-            </div>
-            <div className="PropertyItems">
-                <img src={imgApartment} alt="" className="PropertyListImg" />
-                <div className="PropertyListTitles">
-                    <h1>Apartments</h1>
-                    <h2>50 Apartments</h2>
-                </div>
-            </div>
-            <div className="PropertyItems">
-                <img src={imgRooms} alt="" className="PropertyListImg" />
-                <div className="PropertyListTitles">
-                    <h1>Rooms</h1>
-                    <h2>120 Rooms</h2>
-                </div>
-            </div>
+                            <div className="PropertyItems" key={i}>
+                                <img src={imG} alt="" className="PropertyListImg" />
+                                <div className="PropertyListTitles">
+                                    <h1>{data[i]?.type}</h1>
+                                    <h2>{data[i]?.count} available</h2>
+
+                                </div>
+                            </div>
+                        ))}
+
+                </>
+            )}
         </div>
 
     );

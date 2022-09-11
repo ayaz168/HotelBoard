@@ -1,3 +1,4 @@
+const { count } = require("../models/Hotel");
 const Hotel = require("../models/Hotel");
 const { createError } = require("../utils/error");
 
@@ -44,10 +45,45 @@ module.exports.getHotel = async (req, res, next) => {
 };
 module.exports.getAllHotel = async (req, res, next) => {
   //Next is a middle ware that will run befoe try catch block
+  const { min, max, ...others } = req.query;
   try {
-    const allHotel = await Hotel.find(); //Returns all rentries
+    const allHotel = await Hotel.find({
+      ...others,
+      CheapestPrice: { $gt: min || 1, $lt: max || 100000000 }, //default min max values given
+    }).limit(req.query.limit); //Returns all rentries
     res.status(200).json(allHotel);
   } catch (err) {
     next(err); //error handling using middleware
+  }
+};
+
+module.exports.getCountCity = async (req, res, next) => {
+  const cities = req.query.cities.split(","); //from url ?cities=lahore,islamabad,karachi ==>return them in array form
+
+  try {
+    const list = await Promise.all(
+      cities.map((city) => {
+        return Hotel.countDocuments({ City: city }); ////   slow way >>find({City:city}).length
+      })
+    ); //
+    res.status(200).json(list);
+  } catch (err) {
+    next(err); //error handling using middleware
+  }
+};
+module.exports.getCountType = async (req, res, next) => {
+  try {
+    const hotelCount = await Hotel.countDocuments({ Type: "Hotel" });
+    const resortCount = await Hotel.countDocuments({ Type: "Resort" });
+    const apartmentCount = await Hotel.countDocuments({ Type: "Apartment" });
+    const roomCount = await Hotel.countDocuments({ Type: "Rooms" });
+    res.status(200).json([
+      { type: "Hotel", count: hotelCount },
+      { type: "Resort", count: resortCount },
+      { type: "Apartment", count: apartmentCount },
+      { type: "Room", count: roomCount },
+    ]);
+  } catch (err) {
+    next(err);
   }
 };
