@@ -10,6 +10,11 @@
   max-width: 1024px;
   margin: 20px 0px 100px 0px;
 }
+.headerContainer.list {
+  width: 100%;
+  max-width: 1024px;
+  margin: 20px 0px 0px 0px;
+}
 .headerList {
   display: flex;
   gap: 40px;
@@ -69,10 +74,12 @@
   cursor: pointer;
 }
 .date {
+  z-index: 2;
   position: absolute;
   top: 60px;
 }
 .options {
+  z-index: 2;
   position: absolute;
   top: 60px;
   background-color: white;

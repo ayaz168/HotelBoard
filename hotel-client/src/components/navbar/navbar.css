@@ -6,7 +6,7 @@
 }
 .navContainer {
   width: 100%;
-  max-width: 1080px;
+  max-width: 1024px;
   background-color: rebeccapurple;
   color: white; /*font*/
   display: flex; /* to make logo and buttons horizental*/
