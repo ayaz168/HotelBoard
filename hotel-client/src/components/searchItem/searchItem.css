@@ -1,4 +1,4 @@
-.searchItem {
+.searchHotel {
   border: 1px solid lightgray;
   padding: 10px;
   border-radius: 5px;
@@ -8,97 +8,89 @@
   margin-bottom: 20px;
 }
 
-.siImg {
+.hotelImg {
   width: 200px;
   height: 200px;
   object-fit: cover;
 }
 
-.siDesc {
+.hotelDesc {
   display: flex;
   flex-direction: column;
   gap: 10px;
   flex: 2;
 }
 
-.siTitle {
-  font-size: 20px;
+.hotelTitle {
+  font-hotelze: 20px;
   color: #0071c2;
 }
 
-.siDistance {
-  font-size: 12px;
+.hotelDistance {
+  font-hotelze: 12px;
 }
 
-.siTaxiOp {
-  font-size: 12px;
-  background-color: #008009;
+.hotelTaxiOp {
+  font-hotelze: 12px;
+  background-color: rgb(149, 100, 197);
   color: white;
   width: max-content;
-  padding: 3px;
-  border-radius: 5px;
+  padding: 5px;
+  border-radius: 3px;
+}
+.hotelRating {
+  display: flex;
+
+  justify-content: space-between;
 }
 
-.siSubtitle {
-  font-size: 12px;
+.hotelRating > button {
+  background-color: rgb(149, 100, 197);
+  color: white;
+  padding: 5px;
+  border: none;
+  border-radius: 3px;
+}
+
+.hotelSubtitle {
+  font-hotelze: 12px;
   font-weight: bold;
 }
 
-.siFeatures {
-  font-size: 12px;
+.hotelFeatures {
+  font-hotelze: 12px;
 }
 
-.siCancelOp {
-  font-size: 12px;
+.hotelCancelOp {
+  font-hotelze: 12px;
   color: #008009;
   font-weight: bold;
 }
 
-.siCancelOpSubtitle {
-  font-size: 12px;
-  color: #008009;
-}
-
-.siDetails {
+.hotelDetails {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.siRating {
-  display: flex;
-  justify-content: space-between;
-}
-
-.siRating > span {
-  font-weight: 500;
-}
-.siRating > button {
-  background-color: rgb(149, 100, 197);
-  color: white;
-  padding: 5px;
-  font-weight: bold;
-  border: none;
-}
-
-.siDetailTexts {
+.hotelDetailTexts {
   text-align: right;
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
-.siPrice {
-  font-size: 24px;
+.hotelPrice {
+  font-hotelze: 24px;
 }
 
-.siTaxOp {
-  font-size: 12px;
+.hotelTaxOp {
+  font-hotelze: 12px;
   color: gray;
 }
 
-.siCheckButton {
+.hotelCheckButton {
   background-color: rgb(149, 100, 197);
   color: white;
   font-weight: bold;

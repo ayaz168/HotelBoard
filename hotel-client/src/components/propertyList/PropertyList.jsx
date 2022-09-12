@@ -7,7 +7,6 @@ import useFetch from "../../hooks/useFetch"
 
 export default function PropertyList() {
     const { data, loading, error } = useFetch("http://localhost:8780/hotels/countType");
-    console.log(data);
 
 
     const Images = [imgHotels, imgResorts, imgApartment, imgRooms];

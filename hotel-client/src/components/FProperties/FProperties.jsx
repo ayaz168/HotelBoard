@@ -2,6 +2,7 @@ import "./fproperties.css"
 import imgFP1 from "../Images/froom.jpg"
 import imgFP2 from "../Images/froom2.jpg"
 import imgFP3 from "../Images/froom3.jpg"
+import { Link } from "react-router-dom"
 import useFetch from "../../hooks/useFetch"
 
 export default function FProperties() {

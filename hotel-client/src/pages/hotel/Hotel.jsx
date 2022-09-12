@@ -17,11 +17,35 @@ import Imgh4 from "../../components/Images/h4.jpg"
 import Imgh5 from "../../components/Images/h5.jpg"
 import Imgh6 from "../../components/Images/h6.jpg"
 import { useState } from "react";
+import { useContext } from "react";
+import useFetch from "../../hooks/useFetch"
+import { useLocation } from "react-router-dom";
+import { SearchContext } from "../../context/SearchContext";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import Reserve from "../../components/Reserve/Reserve";
 
 export default function Hotel() {
+    const { user } = useContext(AuthContext);
+    const location = useLocation();//returns path "hotels/<id>"
+
+    const { data, loading, error } = useFetch(`http://localhost:8780/hotels/find/${location.pathname.split("/")[2]}`);
+    const { dates, options } = useContext(SearchContext);//getiing search data from Search context
+    const navigate = useNavigate();
+
+    //Function to create number of days from date
+    const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+    function dayCalculate(date1, date2) {
+        const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+        const nDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+        return nDays;
+    }
+    const daYs = dayCalculate(dates[0].endDate, dates[0].startDate);
+
     const imG = [Imgh6, Imgh2, Imgh3, Imgh4, Imgh5, Imgh1];
     const [slideIndex, setSlideIndex] = useState(0);
     const [openSlider, setOpenSlider] = useState(false);
+    const [openRoom, setOpenRoom] = useState(false);
     const handleOpen = (i) => {
         setSlideIndex(i);
         setOpenSlider(true);
@@ -39,91 +63,92 @@ export default function Hotel() {
         setSlideIndex(newIndex)
     };
 
+    const handleClicker = () => {
+        if (user) {
+            setOpenRoom(true);
+
+        } else {
+            navigate("/login");
+        }
+    }
+
     return (
         <div>
             <Navbar />
             <Header type="list" />
-            <div className="hotelContainer">
-                {openSlider && (<div className="slider">
-                    <FontAwesomeIcon
-                        icon={faCircleXmark}
-                        className="close"
-                        onClick={() => setOpenSlider(false)}
-                    />
-                    <FontAwesomeIcon
-                        icon={faCircleArrowLeft}
-                        className="arrow"
-                        onClick={() => handleSlide("l")}
-                    />
-                    <div className="sliderWrapper">
-                        <img src={imG[slideIndex]} alt="Photo Load Error" className="sliderImg" />
-                    </div>
-                    <FontAwesomeIcon
-                        icon={faCircleArrowRight}
-                        className="arrow"
-                        onClick={() => handleSlide("r")}
-                    />
-                </div>)}
+            {loading ? ("Pleae wait loading data...") :
+                (<>
+                    <div className="hotelContainer">
+                        {openSlider && (<div className="slider">
+                            <FontAwesomeIcon
+                                icon={faCircleXmark}
+                                className="close"
+                                onClick={() => setOpenSlider(false)}
+                            />
+                            <FontAwesomeIcon
+                                icon={faCircleArrowLeft}
+                                className="arrow"
+                                onClick={() => handleSlide("l")}
+                            />
+                            <div className="sliderWrapper">
+                                <img src={imG[slideIndex]} alt="Photo Load Error" className="sliderImg" />
+                            </div>
+                            <FontAwesomeIcon
+                                icon={faCircleArrowRight}
+                                className="arrow"
+                                onClick={() => handleSlide("r")}
+                            />
+                        </div>)}
 
-                <div className="hotelWrapper">
-                    <button className="bookNow">
-                        Reserve
-                    </button>
-                    <h1 className="hotelTitle">The Marriot</h1>
-                    <div className="hotelAddress">
-                        <FontAwesomeIcon icon={faLocationDot} />
-                        <span>Agha Khan Road F5, Islamabad</span>
-                    </div>
-                    <span className="hotelDistance">
-                        Great Location in the heart of the city
-                    </span>
-                    <span className="hotelPriceHighlight">
-                        Book a stay just for 30,000 PKR
-                    </span>
-                    <div className="hotelImages">
-                        {
-                            imG.map((imgg, i) => (
-                                <div className="hotelImgWrapper">
-                                    <img onClick={() => handleOpen(i)} src={imgg} className="hotelImg" alt="Load Error" />
-                                </div>
-                            ))
-                        }
-
-                    </div>
-                    <div className="hotelDetails">
-                        <div className="hotelDetailsTexts">
-                            <h1 className="hotelTitle">Stay in the heart of Islamabad</h1>
-                            <p className="hotelDesc">
-                                Welcome to the Islamabad Marriott Hotel. Situated in the most beautiful
-                                and green city of Pakistan, Islamabad, the capital city, has been ranked
-                                second in the list of the World’s most beautiful capitals. The city is blessed
-                                with breathtaking natural wonders alongside great infrastructure which is an added
-                                attraction for foreigners and tourists. Pakistanis are known for their warm
-                                welcoming nature, and we take pride in serving our guests.The five-star
-                                international Islamabad Marriott Hotel is located at the footsteps of the iconic
-                                and famous Margalla Hills and is within proximity to Rawal Lake, the city center,
-                                hiking trails, and Pakistan Secretariat on Constitution Avenue. Owing to the great
-                                location, the Hotel is just a short ride away from the cultural heritage sites
-                                such as Saidpur Village, Faisal Mosque, Lok Virsa, and Shah Allah Ditta
-                                Caves.It takes less than an hour to commute between the Hotel and Islamabad
-                                International Airport, and an Air-port shuttle service is available on requests.
-                            </p>
-                        </div>
-                        <div className="hotelDetailsPrice">
-                            <h1>Perfect for a short stay!</h1>
-                            <span>
-                                ISlmabad's best hotels
+                        <div className="hotelWrapper">
+                            <button onClick={handleClicker}
+                                className="bookNow">
+                                Reserve
+                            </button>
+                            <h1 className="hotelTitle">{data.Title}</h1>
+                            <div className="hotelAddress">
+                                <FontAwesomeIcon icon={faLocationDot} />
+                                <span>{data.Address}, {data.City}</span>
+                            </div>
+                            <span className="hotelDistance">
+                                Great Location in the heart of the city
                             </span>
-                            <h2>
-                                <b>PKR 32,000</b> (1 nights)
-                            </h2>
-                            <button>Book Now!</button>
+                            <span className="hotelPriceHighlight">
+                                Book a stay just for {data.CheapestPrice} PKR
+                            </span>
+                            <div className="hotelImages">
+                                {
+                                    imG.map((imgg, i) => (
+                                        <div className="hotelImgWrapper">
+                                            <img onClick={() => handleOpen(i)} src={imgg} className="hotelImg" alt="Load Error" />
+                                        </div>
+                                    ))
+                                }
+
+                            </div>
+                            <div className="hotelDetails">
+                                <div className="hotelDetailsTexts">
+                                    <h1 className="hotelTitle">Stay in the heart of {data.City}</h1>
+                                    <p className="hotelDesc">
+                                        {data.Description}
+                                    </p>
+                                </div>
+                                <div className="hotelDetailsPrice">
+                                    <h1>Perfect for a stay!</h1>
+                                    <span>
+                                        {data.City} best hotel
+                                    </span>
+                                    <h2>
+                                        <b>PKR {daYs * data.CheapestPrice}</b> ({daYs} nights)
+                                    </h2>
+                                    <button onClick={handleClicker}>Book Now!</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <MailList />
-                <Footer />
-            </div>
+                        <MailList />
+                        <Footer />
+                    </div></>)}
+            {openRoom && <Reserve setOpen={setOpenRoom} hotelId={location.pathname.split("/")[2]} />}
 
         </div>
     );

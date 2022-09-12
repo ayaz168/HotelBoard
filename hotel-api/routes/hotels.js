@@ -6,6 +6,7 @@ const {
   getAllHotel,
   getCountCity,
   getCountType,
+  getHotelRooms,
 } = require("../controllers/hotelController");
 const { checkAdmin } = require("../utils/tokenTest");
 
@@ -31,5 +32,6 @@ router.get("/", getAllHotel); //will work to get all fetured also
 router.get("/countCity", getCountCity);
 //Get all hotel count by type
 router.get("/countType", getCountType);
+router.get("/room/:id", getHotelRooms);
 
 module.exports = router;
