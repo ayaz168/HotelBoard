@@ -1,4 +1,4 @@
-﻿# HotelBoard
+﻿# TourBoard
 
 This is my projet, where I'm developing a Hotel Booking System app using MERN Stack.
 My database I'm using mongo cloud database where I'm storing my data for user hotel and rooms.
